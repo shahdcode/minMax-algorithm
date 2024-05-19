@@ -8,27 +8,30 @@
 #define COLS 3
 
 // Structure to hold the move coordinates
-class Move {
+
+
+class game {
+
+	class Move {
+	public:
+		int row;
+		int col;
+	};
+
 public:
-    int row;
-    int col;
-};
+	static char player;
+	static char computer;
+	// Function to evaluate the current state of the game
+	int evaluate(char board[ROWS][COLS]);
 
-class game{
-    public:
-    static char player;
-    static char computer;
-// Function to evaluate the current state of the game
-int evaluate(char board[ROWS][COLS]);
+	// Function to check if the game is over
+	int isGameOver(char board[ROWS][COLS]);
 
-// Function to check if the game is over
-int isGameOver(char board[ROWS][COLS]);
+	// Minimax function
+	int minimax(char board[ROWS][COLS], int depth, int isMaximizer);
 
-// Minimax function
-int minimax(char board[ROWS][COLS], int depth, int isMaximizer);
-
-// Function to find the best move for the computer using Minimax
-Move findBestMove(char board[ROWS][COLS]);
+	// Function to find the best move for the computer using Minimax
+	Move findBestMove(char board[ROWS][COLS]);
 };
 
 
