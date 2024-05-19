@@ -14,6 +14,10 @@ public:
     int col;
 };
 
+class game{
+    public:
+    static char player;
+    static char computer;
 // Function to evaluate the current state of the game
 int evaluate(char board[ROWS][COLS]);
 
@@ -25,5 +29,7 @@ int minimax(char board[ROWS][COLS], int depth, int isMaximizer);
 
 // Function to find the best move for the computer using Minimax
 Move findBestMove(char board[ROWS][COLS]);
+};
+
 
 #endif /* BACKTRACKING_H */
