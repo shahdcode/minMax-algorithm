@@ -16,7 +16,6 @@ int game::evaluate(char board[ROWS][COLS]) {
         }
     }
 
-    // Checking for Columns for X or O victory.
     for (int col = 0; col < COLS; col++) {
         if (board[0][col] == board[1][col] &&
             board[1][col] == board[2][col]) {
@@ -27,7 +26,6 @@ int game::evaluate(char board[ROWS][COLS]) {
         }
     }
 
-    // Checking for Diagonals for X or O victory.
     if (board[0][0] == board[1][1] &&
         board[1][1] == board[2][2]) {
         if (board[0][0] == computer)
@@ -44,7 +42,6 @@ int game::evaluate(char board[ROWS][COLS]) {
             return -10;
     }
 
-    // Else if none of them have won then return 0
     return 0;
 }
 
