@@ -15,9 +15,7 @@ const char PLAYER_O = 'O';
 
 
 int minimax(int depth, int nodeIndex,
-    bool maximizingPlayer,
-    int values[], int alpha,
-    int beta)
+    bool maximizingPlayer,int values[], int alpha,int beta)
 {
     if (depth == 3)
         return values[nodeIndex];
