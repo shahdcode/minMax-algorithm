@@ -1,9 +1,46 @@
 #include<iostream>
 #include<vector>
 #include<limits>
+#include <cmath>
+#include<algorithm>
 #include"Backtracking.h"
 #include"Alpha_Beta.h"
 using namespace std;
+
+
+int main(){
+    alpha_beta a;
+     vector<string> board(9, a.EMPTY);
+    while (true) {
+        a.printBoard(board);
+        string winner = a.checkWinner(board);
+
+        if (!winner.empty()) {
+            if (winner == "tie")
+                cout << "It's a tie!" << endl;
+            else
+                cout << "Player " << winner << " wins!" << endl;
+            break;
+        }
+
+        if (count(board.begin(), board.end(), a.EMPTY) % 2 == 1) {
+            int move;
+            cout << "Your move (0-8): ";
+            cin >> move;
+            if (board[move] == a.EMPTY)
+                board[move] = a.PLAYER_O;
+            else
+                cout << "Invalid move! Try again." << endl;
+        }
+        else {
+            a.BranchCount = 0;
+            int move = a.findBestMove(board);
+            board[move] = a.PLAYER_X;
+            cout << "Number of visited branches: " << a.BranchCount << endl;
+        }
+    }
+
+}
 
 // char game::computer='x';
 // char game::player='o';
@@ -73,36 +110,3 @@ using namespace std;
 // }
 
 
-int main(){
-    alpha_beta a;
-     vector<string> board(9, a.EMPTY);
-    while (true) {
-        a.printBoard(board);
-        string winner = a.checkWinner(board);
-
-        if (!winner.empty()) {
-            if (winner == "tie")
-                cout << "It's a tie!" << endl;
-            else
-                cout << "Player " << winner << " wins!" << endl;
-            break;
-        }
-
-        if (count(board.begin(), board.end(), a.EMPTY) % 2 == 1) {
-            int move;
-            cout << "Your move (0-8): ";
-            cin >> move;
-            if (board[move] == a.EMPTY)
-                board[move] = a.PLAYER_O;
-            else
-                cout << "Invalid move! Try again." << endl;
-        }
-        else {
-            a.BranchCount = 0;
-            int move = a.findBestMove(board);
-            board[move] = a.PLAYER_X;
-            cout << "Number of visited branches: " << a.BranchCount << endl;
-        }
-    }
-
-}

@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <limits>
+#include <string>
 
 using namespace std;
 class alpha_beta

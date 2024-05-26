@@ -1,4 +1,4 @@
-#include "alpha_beta.h"
+#include "Alpha_Beta.h"
 #include <cmath>
 #include <iostream>
 #include <vector>
