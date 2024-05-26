@@ -6,110 +6,97 @@
 
 using namespace std;
 
-
-
-int alpha_beta::minimax(int depth, int nodeIndex, bool maximizingPlayer, int alpha, int beta)
-{
-    // Evaluate the current board state directly
-    int score = evaluate(board, player); // Adjust parameters accordingly
-
-    if (depth == 3)
-        return score;
-
-    if (maximizingPlayer)
-    {
-        int best = MIN;
-
-        for (int i = 0; i < 2; i++)
-        {
-            int val = minimax(depth + 1, nodeIndex * 2 + i, false, alpha, beta);
-            best = max(best, val);
-            alpha = max(alpha, best);
-
-            if (beta <= alpha)
-                break;
-        }
-        return best;
-    }
-    else
-    {
-        int best = MAX;
-
-        for (int i = 0; i < 2; i++)
-        {
-            int val = minimax(depth + 1, nodeIndex * 2 + i, true, alpha, beta);
-            best = min(best, val);
-            beta = min(beta, best);
-            if (beta <= alpha)
-                break;
-        }
-        return best;
+void alpha_beta::printBoard(const vector<string>& board) {
+    cout << "---------" << endl;
+    for (int i = 0; i < 3; ++i) {
+        cout << "| " << board[i * 3] << " | " << board[i * 3 + 1] << " | " << board[i * 3 + 2] << " |" << endl;
+        cout << "---------" << endl;
     }
 }
 
-void alpha_beta::printBoard(const vector<vector<char>>& board)
-{
-    for (int i = 0; i < BOARD_SIZE; ++i)
-    {
-        for (int j = 0; j < BOARD_SIZE; ++j)
-        {
-            if (board[i][j] == EMPTY)
-                cout << "_ ";
-            else if (board[i][j] == PLAYER_X)
-                cout << "X ";
-            else
-                cout << "O ";
-        }
-        cout << endl;
-    }
-}
+string alpha_beta::checkWinner(const vector<string>& board) {
+    vector<vector<int>> winning_combinations = {
+        {0, 1, 2}, {3, 4, 5}, {6, 7, 8},  // rows
+        {0, 3, 6}, {1, 4, 7}, {2, 5, 8},  // columns
+        {0, 4, 8}, {2, 4, 6}  // diagonals
+    };
 
-int alpha_beta::checkWin(const vector<vector<char>>& board, char player)
-{
-
-    for (int i = 0; i < BOARD_SIZE; ++i)
-    {
-        if (board[i][0] == player && board[i][1] == player && board[i][2] == player)
-            return player;
-        if (board[0][i] == player && board[1][i] == player && board[2][i] == player)
-            return player;
+    for (const auto& combination : winning_combinations) {
+        if (board[combination[0]] == board[combination[1]] && board[combination[1]] == board[combination[2]] && board[combination[0]] != EMPTY)
+            return board[combination[0]];
     }
 
-    if (board[0][0] == player && board[1][1] == player && board[2][2] == player)
-        return player;
-    if (board[0][2] == player && board[1][1] == player && board[2][0] == player)
-        return player;
+    if (find(board.begin(), board.end(), EMPTY) == board.end())
+        return "tie";
 
-    return EMPTY;
+    return "";
 }
-int alpha_beta::evaluate(const vector<vector<char>>& board, char player) {
-    char winner = checkWin(board, player);
-    if (winner == PLAYER_X) {
+
+int alpha_beta::evaluate(const vector<string>& board) {
+    string winner = checkWinner(board);
+
+    if (winner == PLAYER_X)
         return 1;
-    }
-    else if (winner == PLAYER_O) {
+    else if (winner == PLAYER_O)
         return -1;
+    else
+        return 0;
+}
+
+int alpha_beta::minimax(vector<string>& board, int depth, int alpha, int beta, bool maximizingPlayer) {
+    BranchCount++;
+    string winner = checkWinner(board);
+    if (winner != "" || depth == 0)
+        return evaluate(board);
+
+    if (maximizingPlayer) {
+        int maxEval = -numeric_limits<int>::max();
+        for (int i = 0; i < 9; ++i) {
+            if (board[i] == EMPTY) {
+                board[i] = PLAYER_X;
+                int evalScore = minimax(board, depth - 1, alpha, beta, false);
+                board[i] = EMPTY;
+                maxEval = max(maxEval, evalScore);
+                alpha = max(alpha, evalScore);
+                if (beta <= alpha)
+                    break;
+            }
+        }
+        return maxEval;
     }
     else {
-        return 0;
+        int minEval = numeric_limits<int>::max();
+        for (int i = 0; i < 9; ++i) {
+            if (board[i] == EMPTY) {
+                board[i] = PLAYER_O;
+                int evalScore = minimax(board, depth - 1, alpha, beta, true);
+                board[i] = EMPTY;
+                minEval = min(minEval, evalScore);
+                beta = min(beta, evalScore);
+                if (beta <= alpha)
+                    break;
+            }
+        }
+        return minEval;
     }
 }
 
-alpha_beta::Move alpha_beta::findBestMove(vector<char>& board) {
-    int best_score = numeric_limits<int>::min();
-    Move best_move = { -1, -1 };
+int alpha_beta::findBestMove(vector<string>& board) {
+    int bestScore = -numeric_limits<int>::max();
+    int bestMove = -1;
 
-    for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+    for (int i = 0; i < 9; ++i) {
         if (board[i] == EMPTY) {
-            board[i] = player;
-            int move_score = minimax(0, i, false, MIN, MAX);
+            board[i] = PLAYER_X;
+            int moveScore = minimax(board, 9, -numeric_limits<int>::max(), numeric_limits<int>::max(), false);
             board[i] = EMPTY;
 
-            if (move_score > best_score) {
-                best_score = move_score;
-                best_move = { i / BOARD_SIZE, i % BOARD_SIZE };
+            if (moveScore > bestScore) {
+                bestScore = moveScore;
+                bestMove = i;
             }
         }
     }
-    return best_move;
+    return bestMove;
 }
+
