@@ -5,3 +5,6 @@
 .pdb
 x64/
 .vs/
+.git/
+.filters
+.user

@@ -1,13 +1,14 @@
 #include "Game.h"
 
-std::vector<std::string> Game::gameGrid;
+
+std::vector<std::string> Game::gameGrid = { "_", "_", "_", "_", "_", "_", "_", "_", "_" };
 int Game::BranchCount = 0;
 int Game::NumberOfIteration = 0;
 bool Game::AlgoInUse = 0;
 
 Game::Game()
 {
-	gameGrid = { "_", "_", "_", "_", "_", "_", "_", "_", "_" };
+	//gameGrid = { "_", "_", "_", "_", "_", "_", "_", "_", "_" };
 }
 bool Game::selectedAlgorithm(tgui::Gui& gui) { //0 For Brute Force and 1 for Alpha Beta
 
@@ -90,7 +91,26 @@ void Game::InitGUI(tgui::GuiSFML& gui) ///Keep Adding GUI Elements and Find way 
 	tgui::ChildWindow::Ptr InfoWindow = tgui::ChildWindow::create("Info About Solving Algorithms");
 	InfoWindow->setSize(400, 450);
 	InfoWindow->setResizable(false);
-	InfoWindow->loadWidgetsFromFile("InfoSec1-model.txt");
+
+	auto InfoLabel1 = tgui::Label::create("Tic Tac Toe Solver");
+	InfoLabel1->setTextSize(22);
+	InfoLabel1->setPosition(40, 40);
+	InfoLabel1->getRenderer()->setTextStyle(tgui::TextStyle::Bold | tgui::TextStyle::Underlined);
+
+	auto InfoPara1 = tgui::Label::create("This is a Tic Tac Toe \"BOT\" than can Play the game tic tac toe against human players and never loose(We hope so).\n\n\nThe Bot Can Play Against Humans Leveraging the MiniMax Algorithm. The Algorithm was implemented in 2 different approches: Good Old Brute Force and an of it Using Alpha beta (Read our Paper -link below- for more Info).\n\n\nThe MiniMax Algorithm finds The Best/Most optimum play for it's turn by Calculating all possible states of the Game from the current State of the Board trying to pick the move that maximizes it's chances of winning and avoiding the paths that can give the opponent an advantage in winning hence minimizing the opponent's chance of winning.\n\n\nThe Brute Force Approach of the minimax Algorithm can find the most efficient play for it's turn with time complexity: O(n^n).\n\n\nThe Alpha Beta pruning Approach implementation on the other hand acheives Lower time complexity although it has the same worst case complexity (O(n^n)) However it never reaches this high complexity as it usually excludes branches/paths early on during the search for the best Path/move for Maximizing it's chance of Winning.\n");
+	InfoPara1->setTextSize(16);
+	InfoPara1->setSize(320, 300);
+	InfoPara1->setPosition(50, 100);
+	
+	
+	InfoWindow->add(InfoLabel1);
+	InfoWindow->add(InfoPara1);
+
+	//InfoWindow->loadWidgetsFromFile("InfoSec1-model.txt");
+	
+	
+
+	
 	//gui.add(InfoWindow);
 
 	tgui::Button::Ptr InfoShowButton = tgui::Button::create("More Info!");
@@ -234,16 +254,16 @@ void Game::resetGame()
 
 
 
-void Game::printBoard()
-{
-	{
-		std::cout << "---------" << '\n';
-		for (int i = 0; i < 3; ++i) {
-			std::cout << "| " << gameGrid[i * 3] << " | " << gameGrid[i * 3 + 1] << " | " << gameGrid[i * 3 + 2] << " |" << '\n';
-			std::cout << "---------\n";
-		}
-	}
-}
+//void Game::printBoard()
+//{
+//	{
+//		std::cout << "---------" << '\n';
+//		for (int i = 0; i < 3; ++i) {
+//			std::cout << "| " << gameGrid[i * 3] << " | " << gameGrid[i * 3 + 1] << " | " << gameGrid[i * 3 + 2] << " |" << '\n';
+//			std::cout << "---------\n";
+//		}
+//	}
+//}
 
 
 int Game::getVisitedBranches()

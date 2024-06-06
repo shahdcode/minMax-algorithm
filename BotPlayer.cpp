@@ -143,7 +143,7 @@ int BotPlayer::minimaxAlphaBeta(int depth, int alpha, int beta, bool maximizingP
 
 int BotPlayer::findBestMoveAlphaBeta()
 {
-    std::cout << "Finding Best Move!\n";
+    //std::cout << "Finding Best Move!\n";
     int bestScore = INT_MIN;
     int bestMove = -1;
 
@@ -160,7 +160,7 @@ int BotPlayer::findBestMoveAlphaBeta()
             }
         }
     }
-    std::cout << "Found Best Move at " << bestMove << '\n';
+    //std::cout << "Found Best Move at " << bestMove << '\n';
     return bestMove;
 }
 

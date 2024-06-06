@@ -1,7 +1,7 @@
 #pragma once
 #include <TGUI/TGUI.hpp>
 #include <vector>
-#include <iostream>
+
 class Game
 {
 private:

@@ -1,4 +1,6 @@
-#include <iostream>
+#define NOMINMAX
+
+#include <Windows.h>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
@@ -10,21 +12,21 @@
 
 
 
-int main() {
+int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpszArgument, int nCmdShow) {
 	sf::RenderWindow window(sf::VideoMode(800,600), "Tic Tac Toe", sf::Style::Titlebar | sf::Style::Close);
 	tgui::GuiSFML gui{window};
 
-	Game TicTacToe;
-	BotPlayer botPlayer;
+	Game *TicTacToe = new Game();
+	BotPlayer *botPlayer = new BotPlayer();
 
 	sf::RectangleShape Backgrnd(sf::Vector2f(window.getSize().x, window.getSize().y));
 	Backgrnd.setFillColor(sf::Color::White);
 
-	TicTacToe.InitGUI(gui);
-	TicTacToe.setTurnFlag(true);
+	TicTacToe->InitGUI(gui);
+	TicTacToe->setTurnFlag(true);
 
 	
-	std::vector<tgui::Button::Ptr> grid = TicTacToe.InitGameGrid(gui);
+	std::vector<tgui::Button::Ptr> grid = TicTacToe->InitGameGrid(gui);
 	
 	sf::RectangleShape GridBoxBackground(sf::Vector2f(360, 360));
 	GridBoxBackground.setPosition(sf::Vector2f(45, 95));
@@ -45,29 +47,28 @@ int main() {
 			
 		}
 
-		botPlayer.checkGameState(gui);
+		botPlayer->checkGameState(gui);
 
-		if (!TicTacToe.isHumanTurn() && botPlayer.isGameOver() == 0) {
+		if (!TicTacToe->isHumanTurn() && botPlayer->isGameOver() == 0) {
 
-			botPlayer.resetBranchCounter();
-			botPlayer.resetIterationCounter();
+			botPlayer->resetBranchCounter();
+			botPlayer->resetIterationCounter();
 
 			int BestMove;
-			if (TicTacToe.selectedAlgorithm(gui)) {			
-				BestMove = botPlayer.findBestMoveAlphaBeta();
+			if (TicTacToe->selectedAlgorithm(gui)) {			
+				BestMove = botPlayer->findBestMoveAlphaBeta();
 
 			}
 			else {	
-				BestMove = botPlayer.findBestMoveBrute();
+				BestMove = botPlayer->findBestMoveBrute();
 			}
-			BranchesVisited = botPlayer.getVisitedBranches();
-			numberOfIterations = botPlayer.getIterationCounter();
+			BranchesVisited = botPlayer->getVisitedBranches();
+			numberOfIterations = botPlayer->getIterationCounter();
 			
 
-			TicTacToe.setGridPlayValue(BestMove, TicTacToe.PLAYER_X);
-			TicTacToe.setTurnFlag(true);
+			TicTacToe->setGridPlayValue(BestMove, TicTacToe->PLAYER_X);
+			TicTacToe->setTurnFlag(true);
 
-			std::cout << "Branches Visited : " << BranchesVisited << "\nIn " << numberOfIterations << " Iterations\n";
 		
 		}
 
@@ -79,8 +80,8 @@ int main() {
 
 		
 		
-		TicTacToe.updateGrid(grid);
-		TicTacToe.uppdateStats(gui);
+		TicTacToe->updateGrid(grid);
+		TicTacToe->uppdateStats(gui);
 
 		
 

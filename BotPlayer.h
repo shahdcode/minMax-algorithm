@@ -16,7 +16,7 @@ private:
 
 
 public:
-	bool isDraw();
+	
 	//int evaluate(char board[ROWS][COLS]);
 
 
